@@ -1,0 +1,57 @@
+﻿@model List<ProductContactMessage>
+
+@{
+    ViewData["Title"] = "Product Contacts";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header main-background py-3">
+                        <h6 class="m-0 font-weight-bold main-color">Product Contacts</h6>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="main-color">Product Contacts</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="main-color text-center">First Name</th>
+                                        <th class="main-color text-center">Last Name</th>
+                                        <th class="main-color text-center">Email</th>
+                                        <th class="main-color text-center">Nature Request</th>
+                                        <th class="main-color text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var productContactMessage in Model)
+                                    {
+                                    <tr>
+                                        <td class="text-center">@productContactMessage.FirstName</td>
+                                        <td class="text-center">@productContactMessage.LastName</td>
+                                        <td class="text-center">@productContactMessage.Email</td>
+                                        <td class="text-center">@productContactMessage.NatureRequest</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center">
+                                                <a asp-action="detailscontact" asp-controller="product" asp-route-id="@productContactMessage.Id" class="btn btn-info mr-1">Details</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

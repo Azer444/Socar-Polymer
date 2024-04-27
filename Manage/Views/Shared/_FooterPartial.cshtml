@@ -1,0 +1,102 @@
+﻿@model FooterPartialViewModel
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+<footer class="footer">
+    <div class="container-fluid-md">
+        <div class="footer-wrapper base-container">
+            <div class="row">
+                @{
+                    foreach (var navTitleComponent in Model.NavTitleComponents)
+                    {
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <ul class="footer-links">
+                                <li class="footer-links-title">
+                                    @if (lang == "az")
+                                    {
+                                        @navTitleComponent.Title_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @navTitleComponent.Title_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @navTitleComponent.Title_EN
+                                    }
+                                </li>
+                                @foreach (var marketTitleComponent in navTitleComponent.MarketTitleComponents)
+                                {
+                                    var link = "/" + lang + "/market/" + marketTitleComponent.Slug;
+                                    <li class="footer-links-item">
+                                        <a href="@link">
+                                            @if (lang == "az")
+                                            {
+                                                @marketTitleComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @marketTitleComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @marketTitleComponent.Title_EN
+                                            }
+                                        </a>
+                                    </li>
+                                }
+                                @foreach (var certificateComponent in navTitleComponent.CertificateComponents)
+                                {
+                                    var link = "/" + lang + "/certificates_documents/" + certificateComponent.Slug;
+                                    <li class="footer-links-item">
+                                        <a href="@link">
+                                            @if (lang == "az")
+                                            {
+                                                @certificateComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @certificateComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @certificateComponent.Title_EN
+                                            }
+                                        </a>
+                                    </li>
+                                }
+                                @foreach (var navComponent in navTitleComponent.NavComponents)
+                                {
+                                    var link = "/" + lang + "/" + navComponent.Link;
+                                    <li class="footer-links-item">
+                                        <a href="@link">
+                                            @if (lang == "az")
+                                            {
+                                                @navComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @navComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @navComponent.Title_EN
+                                            }
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p class="copyright">SOCAR Polymer 2021</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

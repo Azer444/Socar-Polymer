@@ -1,0 +1,228 @@
+﻿@model NewsViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | News";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+    var active = "";
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @if (lang == "az")
+            {
+                <a asp-action="index" asp-controller="home">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a asp-action="index" asp-controller="home">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a asp-action="index" asp-controller="home">Home</a>
+            }
+        </li>
+        @if (Model.News_ == null)
+        {
+            active = "active";
+        }
+        <li class="breadcrumb-item @active" aria-current="page">
+            @{
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "news");
+
+                if (lang == "az")
+                {
+                    <a asp-action="index" asp-controller="news" asp-route-slug="">@breadcrumb.Title_AZ</a>
+                }
+                else if (lang == "ru")
+                {
+                    <a asp-action="index" asp-controller="news" asp-route-slug="">@breadcrumb.Title_RU</a>
+                }
+                else if (lang == "en")
+                {
+                    <a asp-action="index" asp-controller="news" asp-route-slug="">@breadcrumb.Title_EN</a>
+                }
+            }
+        </li>
+        @if (Model.News_ != null)
+        {
+            <li class="breadcrumb-item active" aria-current="page">
+                @{
+                    if (lang == "az")
+                    {
+                        <a asp-action="index" asp-controller="news" asp-route-slug="@Model.News_.Slug">@Model.News_.Title_AZ</a>
+                    }
+                    else if (lang == "ru")
+                    {
+                        <a asp-action="index" asp-controller="news" asp-route-slug="@Model.News_.Slug">@Model.News_.Title_RU</a>
+                    }
+                    else if (lang == "en")
+                    {
+                        <a asp-action="index" asp-controller="news" asp-route-slug="@Model.News_.Slug">@Model.News_.Title_EN</a>
+                    }
+                }
+            </li>
+        }
+    </ol>
+</nav>
+
+<!------------------------------------- BreadCrumb End ------------------------------------->
+
+@if (Model.News_ != null)
+{
+    <div class="container-fluid-md catalog-header base-container">
+        <div class="row no-gutters">
+            <div class="col-lg-9">
+                <h2 class="title_g">
+                    @if (lang == "az")
+                    {
+                        @Model.News_.Title_AZ
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Model.News_.Title_RU
+                    }
+                    else if (lang == "en")
+                    {
+                        @Model.News_.Title_EN
+                    }
+                </h2>
+            </div>
+            <div class="col-lg-3 d-flex mt-3 justify-content-end">
+                <p class="info_g">@Model.News_.CreatedAt.ToString("MMMM dd yyyy")</p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid-md catalog-header base-container">
+        <div class="row no-gutters">
+            <div class="col-lg-7">
+                <h2 class="title_g">
+                    @if (lang == "az")
+                    {
+                        @breadcrumb.Title_AZ
+                    }
+                    else if (lang == "ru")
+                    {
+                        @breadcrumb.Title_RU
+                    }
+                    else if (lang == "en")
+                    {
+                        @breadcrumb.Title_EN
+                    }
+                </h2>
+            </div>
+            <div class="col-lg-5 d-flex align-items-center justify-content-end">
+                <div class="info_g">
+                    @if (lang == "az")
+                    {
+                        @Html.Raw(breadcrumb.Content_AZ)
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Html.Raw(breadcrumb.Content_RU)
+                    }
+                    else if (lang == "en")
+                    {
+                        @Html.Raw(breadcrumb.Content_EN)
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.News_ != null)
+{
+    <section class="news-detail">
+        @{
+            var photoPath = "/uploads/" + Model.News_.PhotoName;
+        }
+        <div class="news-detail-img">
+            <img class="img-fluid" src="@photoPath" alt="Socar Polymer Results in 2020">
+        </div>
+        <div class="news-detail-text">
+            @if (lang == "az")
+            {
+                @Html.Raw(Model.News_.Content_AZ)
+            }
+            else if (lang == "ru")
+            {
+                @Html.Raw(Model.News_.Content_RU)
+            }
+            else if (lang == "en")
+            {
+                @Html.Raw(Model.News_.Content_EN)
+            }
+        </div>
+    </section>
+}
+else
+{
+
+    <section class="news-section">
+        <div class="container-fluid-md">
+            <div class="news-cards base-container">
+                @foreach (var news in Model.News)
+                {
+                    <div class="news-card">
+                        <a asp-action="index" asp-controller="news" asp-route-slug="@news.Slug">
+                            <p class="news-card-title">
+                                @if (lang == "az")
+                                {
+                                    @news.Title_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @news.Title_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @news.Title_EN
+                                }
+                            </p>
+                            <div class="news-card-info">
+                                @if (lang == "az")
+                                {
+                                    @Html.Raw(news.Content_AZ)
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @Html.Raw(news.Content_RU)
+                                }
+                                else if (lang == "en")
+                                {
+                                    @Html.Raw(news.Content_EN)
+                                }
+                            </div>
+                            <p class="news-card-date">@news.CreatedAt.ToString("MMMM dd yyyy")</p>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel)
+
+@section Scripts{ 
+    <script>
+        $(".news-card .news-card-info").each(function () {
+            var text = $(this).children().eq(0).text();
+            if (text.length > 200) {
+                $(this).text(text.substr(0, text.lastIndexOf(' ', 197)) + '...');
+            }
+            else {
+                $(this).text(text + '...');
+            }
+        });
+    </script>
+}

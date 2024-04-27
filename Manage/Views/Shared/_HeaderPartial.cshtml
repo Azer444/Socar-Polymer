@@ -1,0 +1,421 @@
+﻿@model HeaderPartialViewModel
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+    var route = Url.RouteUrl(Url.ActionContext.RouteData.Values);
+    var sub_route = route.Length > 3 ? route.Substring(4) : string.Empty;
+}
+
+<div class="header">
+    <div class="navbar base-container">
+        <div class="row no-gutters w-100">
+            <div class="col-lg-1 col-md-1 col-sm-3 col-4" id="navbar-brand">
+                <a asp-action="index" asp-controller="home" class="navbar-brand">
+                    <img class="img-fluid" src="~/img/image1.png" alt="Socar Polymer">
+                </a>
+            </div>
+            <div class="col-lg col-md col d-md-flex align-items-center justify-content-center">
+                <ul class="nav main-nav d-md-flex d-none justify-content-center">
+                    @foreach (var navTitleComponent in Model.NavTitleComponents)
+                    {
+                        var link = "/" + lang + "/" + navTitleComponent.Link;
+                        <li class="nav-item">
+                            <a href="@link" class="nav-link">
+                                @if (lang == "az")
+                                {
+                                    @navTitleComponent.Title_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @navTitleComponent.Title_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @navTitleComponent.Title_EN
+                                }
+                            </a>
+                            @if (navTitleComponent.MarketTitleComponents.Count > 0 || navTitleComponent.CertificateComponents.Count > 0 || navTitleComponent.NavComponents.Count > 0)
+                            {
+                                <div class="nav-dropdown">
+                                    <div class="nav-dropdown-menu">
+                                        @{
+                                            link = "/" + lang + "/" + navTitleComponent.Link;
+                                        }
+                                        <a href="@link" class="nav-dropdown-menu-title">
+                                            @if (lang == "az")
+                                            {
+                                                @navTitleComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @navTitleComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @navTitleComponent.Title_EN
+                                            }
+                                        </a>
+                                        <ul class="nav-dropdown-menu-items">
+                                            @foreach (var marketTitleComponent in navTitleComponent.MarketTitleComponents)
+                                            {
+                                                <li class="list_item">
+                                                    @{
+                                                        link = "/" + lang + "/market/" + marketTitleComponent.Location.Name.ToLower() + "/" + marketTitleComponent.Slug;
+                                                    }
+                                                    <a class="nav-dropdown-menu-items-link" href="@link">
+                                                        @if (lang == "az")
+                                                        {
+                                                            @marketTitleComponent.Title_AZ
+                                                        }
+                                                        else if (lang == "ru")
+                                                        {
+                                                            @marketTitleComponent.Title_RU
+                                                        }
+                                                        else if (lang == "en")
+                                                        {
+                                                            @marketTitleComponent.Title_EN
+                                                        }
+                                                        @if (marketTitleComponent.MarketComponents.Count > 0)
+                                                        {
+                                                            <div class="right-arrow">
+                                                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M0 8.57143L3.75 5L0 1.42857L0.75 0L6 5L0.75 10L0 8.57143Z"
+                                                                          fill="#454545" />
+                                                                </svg>
+                                                            </div>
+                                                        }
+                                                    </a>
+                                                    @if (marketTitleComponent.MarketComponents.Count > 0)
+                                                    {
+                                                        <div class="nav-dropdown-menu-vertical">
+                                                            <div class="nav-dropdown-menu-vertical-wrapper">
+                                                                <ul>
+                                                                    @foreach (var marketComponent in marketTitleComponent.MarketComponents)
+                                                                    {
+                                                                        <li>
+                                                                            @{
+                                                                                link = "/" + lang + "/market/" + marketTitleComponent.Location.Name.ToLower() + "/" + marketTitleComponent.Slug + "/" + marketComponent.Slug;
+                                                                            }
+                                                                            <a href="@link">
+                                                                                @if (lang == "az")
+                                                                                {
+                                                                                    @marketComponent.Title_AZ
+                                                                                }
+                                                                                else if (lang == "ru")
+                                                                                {
+                                                                                    @marketComponent.Title_RU
+                                                                                }
+                                                                                else if (lang == "en")
+                                                                                {
+                                                                                    @marketComponent.Title_EN
+                                                                                }
+                                                                            </a>
+                                                                            @if (marketComponent.MarketSubComponents.Count > 0)
+                                                                            {
+                                                                                <ul class="dropdown-menu-list">
+                                                                                    @foreach (var marketSubComponent in marketComponent.MarketSubComponents)
+                                                                                    {
+                                                                                        <li>
+                                                                                            @{
+                                                                                                link = "/" + lang + "/market/" + marketTitleComponent.Location.Name.ToLower() + "/" + marketTitleComponent.Slug + "/" + marketComponent.Slug + "/" + marketSubComponent.Slug;
+                                                                                            }
+                                                                                            <a href="@link">
+                                                                                                @if (lang == "az")
+                                                                                                {
+                                                                                                    @marketSubComponent.Title_AZ
+                                                                                                }
+                                                                                                else if (lang == "ru")
+                                                                                                {
+                                                                                                    @marketSubComponent.Title_RU
+                                                                                                }
+                                                                                                else if (lang == "en")
+                                                                                                {
+                                                                                                    @marketSubComponent.Title_EN
+                                                                                                }
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    }
+                                                                                </ul>
+                                                                            }
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </li>
+                                            }
+                                            @foreach (var certificateComponent in navTitleComponent.CertificateComponents)
+                                            {
+                                                <li class="list_item">
+                                                    @{
+                                                        link = "/" + lang + "/certificates/" + certificateComponent.Slug;
+                                                    }
+                                                    <a class="nav-dropdown-menu-items-link" href="@link">
+                                                        @if (lang == "az")
+                                                        {
+                                                            @certificateComponent.Title_AZ
+                                                        }
+                                                        else if (lang == "ru")
+                                                        {
+                                                            @certificateComponent.Title_RU
+                                                        }
+                                                        else if (lang == "en")
+                                                        {
+                                                            @certificateComponent.Title_EN
+                                                        }
+                                                    </a>
+                                                </li>
+                                            }
+                                            @foreach (var navComponent in navTitleComponent.NavComponents)
+                                            {
+                                                <li class="list_item">
+                                                    @{
+                                                        link = "/" + lang + "/" + navComponent.Link;
+                                                    }
+                                                    <a class="nav-dropdown-menu-items-link" href="@link">
+                                                        @if (lang == "az")
+                                                        {
+                                                            @navComponent.Title_AZ
+                                                        }
+                                                        else if (lang == "ru")
+                                                        {
+                                                            @navComponent.Title_RU
+                                                        }
+                                                        else if (lang == "en")
+                                                        {
+                                                            @navComponent.Title_EN
+                                                        }
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </li>
+                    }
+                </ul>
+                <!--<div class="nav-search hidden mt-md-0 mt-3">
+                <div class="nav-search-cover">
+                    <form action="" id="search-btn-form">-->
+                <!-- <label for="search-nav">Search</label> -->
+                <!--<input class="form-control" type="text" placeholder="Search">
+                            <button class="btn btn-close-search">
+                                <img src="~/img/close.svg" alt="Close">
+                            </button>
+                        </form>
+                    </div>
+                </div>-->
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-3 col-5">
+                <div class="search-lang">
+                    @*<form action="" autocomplete="off">
+                            <button class="btn btn-search">Search</button>
+                        </form>*@
+                    <div class="dropdown m-0 dropdown-language sm-hidden">
+                        <button class="btn" type="button" role="button" id="language" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <img src="~/img/Group29.png" alt="language">
+                        </button>
+                        <div class="@route"></div>
+                        <div class="dropdown-menu" aria-labelledby="language">
+                            <a href="/en/@sub_route" class="dropdown-item">En</a>
+                            <a href="/ru/@sub_route" class="dropdown-item">Ru</a>
+                        </div>
+                    </div>
+                    <!-- Responsive Menu elave etmek lazimdir -->
+                    <div class="d-md-none">
+                        <button role="button" class="hamburger">
+                            <div></div>
+                            <div></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="responsive-navbar">
+            <div class="responsive-navbar-wrapper">
+                @foreach (var navTitleComponent in Model.NavTitleComponents)
+                {
+                    var link = "/" + lang + "/" + navTitleComponent.Link;
+                    <a href="@link" class="responsive-navbar-list-title">
+                        @if (lang == "az")
+                        {
+                            @navTitleComponent.Title_AZ
+                        }
+                        else if (lang == "ru")
+                        {
+                            @navTitleComponent.Title_RU
+                        }
+                        else if (lang == "en")
+                        {
+                            @navTitleComponent.Title_EN
+                        }
+                    </a>
+                    @if (navTitleComponent.NavComponents.Count > 0 || navTitleComponent.CertificateComponents.Count > 0 || navTitleComponent.MarketTitleComponents.Count > 0)
+                    {
+                        <ul class="responsive-navbar-list">
+                            @foreach (var marketTitleComponent in navTitleComponent.MarketTitleComponents)
+                            {
+                                <li class="responsive-navbar-list-item">
+                                    @if (marketTitleComponent.MarketComponents.Count > 0)
+                                    {
+                                        <button role="button" class="btn-navbar" id="agriculture">
+                                            @if (lang == "az")
+                                            {
+                                                @marketTitleComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @marketTitleComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @marketTitleComponent.Title_EN
+                                            }
+                                            <div class="right-arrow">
+                                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0 8.57143L3.75 5L0 1.42857L0.75 0L6 5L0.75 10L0 8.57143Z"
+                                                          fill="#454545" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        link = "/" + lang + "/market/" + marketTitleComponent.Location.Name.ToLower() + "/" + marketTitleComponent.Slug;
+                                        <a href="@link">
+                                            @if (lang == "az")
+                                            {
+                                                @marketTitleComponent.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @marketTitleComponent.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @marketTitleComponent.Title_EN
+                                            }
+                                        </a>
+                                    }
+                                </li>
+                            }
+                            @foreach (var certificateComponent in navTitleComponent.CertificateComponents)
+                            {
+                                <li class="responsive-navbar-list-item">
+                                    @{
+                                        link = "/" + lang + "/certificates_documents/" + certificateComponent.Slug;
+                                    }
+                                    <a href="@link">
+                                        @if (lang == "az")
+                                        {
+                                            @certificateComponent.Title_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @certificateComponent.Title_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @certificateComponent.Title_EN
+                                        }
+                                    </a>
+                                </li>
+                            }
+                            @foreach (var navComponent in navTitleComponent.NavComponents)
+                            {
+                                <li class="responsive-navbar-list-item">
+                                    @{
+                                        link = "/" + lang + "/sustainability/" + navComponent.Link;
+                                    }
+                                    <a href="@link">
+                                        @if (lang == "az")
+                                        {
+                                            @navComponent.Title_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @navComponent.Title_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @navComponent.Title_EN
+                                        }
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+            @foreach (var navTitleComponent in Model.NavTitleComponents)
+            {
+                @foreach (var marketTitleComponent in navTitleComponent.MarketTitleComponents)
+                {
+                    @if (marketTitleComponent.MarketComponents.Count > 0)
+                    {
+                        <div class="responsive-navbar-sidebar" data-target="agriculture">
+                            <p class="responsive-navbar-list-title">
+                                @if (lang == "az")
+                                {
+                                    @marketTitleComponent.NavTitleComponent.Title_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @marketTitleComponent.NavTitleComponent.Title_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @marketTitleComponent.NavTitleComponent.Title_EN
+                                }
+                            </p>
+                            <ul class="responsive-navbar-list">
+                                <li class="responsive-navbar-list-item">
+                                    <button role="button" class="btn-navbar go-back">
+                                        <img src="/img/left_arrow.svg" alt="">
+                                        @if (lang == "az")
+                                        {
+                                            @marketTitleComponent.Title_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @marketTitleComponent.Title_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @marketTitleComponent.Title_EN
+                                        }
+                                    </button>
+                                </li>
+                                @foreach (var navTitleComponent_ in Model.NavTitleComponents)
+                                {
+                                    var link = "/" + lang + "/" + navTitleComponent_.Link;
+                                    <li class="responsive-navbar-list-item">
+                                        <a href="@link">
+                                            @if (lang == "az")
+                                            {
+                                                @navTitleComponent_.Title_AZ
+                                            }
+                                            else if (lang == "ru")
+                                            {
+                                                @navTitleComponent_.Title_RU
+                                            }
+                                            else if (lang == "en")
+                                            {
+                                                @navTitleComponent_.Title_EN
+                                            }
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+﻿@model CertificatesIndexViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Certificates";
+}
+
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @if (lang == "az")
+            {
+                <a asp-action="index" asp-controller="home">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a asp-action="index" asp-controller="home">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a asp-action="index" asp-controller="home">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "certificates & documents");
+                if (lang == "az")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_AZ</a>
+                }
+                else if (lang == "ru")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_RU</a>
+                }
+                else if (lang == "en")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_EN</a>
+                }
+            }
+        </li>
+    </ol>
+</nav>
+
+<!------------------------------------- BreadCrumb End ------------------------------------->
+
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row no-gutters">
+        <div class="col-lg-7">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </h2>
+        </div>
+        <div class="col-lg-5 d-flex mt-4 justify-content-center align-items-center">
+            <div class="info_g">
+                @if (lang == "az")
+                {
+                    @Html.Raw(breadcrumb.Content_AZ)
+                }
+                else if (lang == "ru")
+                {
+                    @Html.Raw(breadcrumb.Content_RU)
+                }
+                else if (lang == "en")
+                {
+                    @Html.Raw(breadcrumb.Content_EN)
+                }
+            </div>
+        </div>
+        @if (Model.CertificateComponents.Count == 0)
+        {
+            <div class="col-12" style="margin-top:100px;">
+                <img class="w-100" src="~/img/construction.png" />
+            </div>
+        }
+    </div>
+</div>
+
+<section class="socar-section">
+    <div class="container-fluid-md">
+        <div class="socar-cards base-container">
+            @foreach (var certificateComponent in Model.CertificateComponents)
+            {
+                var photoPath = "/uploads/" + certificateComponent.PhotoName;
+                <div class="socar-card">
+                    <div class="socar-card-img">
+                        <img src="@photoPath">
+                    </div>
+                    <div class="socar-card-body">
+                        <p class="socar-card-title">
+                            @if (lang == "az")
+                            {
+                                @certificateComponent.Title_AZ
+                            }
+                            else if (lang == "ru")
+                            {
+                                @certificateComponent.Title_RU
+                            }
+                            else if (lang == "en")
+                            {
+                                @certificateComponent.Title_EN
+                            }
+                        </p>
+                        <p class="socar-card-info">
+                            @if (lang == "az")
+                            {
+                                @Html.Raw(certificateComponent.Content_AZ)
+                            }
+                            else if (lang == "ru")
+                            {
+                                @Html.Raw(certificateComponent.Content_RU)
+                            }
+                            else if (lang == "en")
+                            {
+                                @Html.Raw(certificateComponent.Content_EN)
+                            }
+                        </p>
+                        @{
+                            var link = "/" + lang + "/certificates/" + certificateComponent.Slug;
+                        }
+                        @if (lang == "az")
+                        {
+                            <a href="@link" class="socar-card-btn">Ətraflı</a>
+                        }
+                        else if (lang == "ru")
+                        {
+                            <a href="@link" class="socar-card-btn">Подробности</a>
+                        }
+                        else if (lang == "en")
+                        {
+                            <a href="@link" class="socar-card-btn">More</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel) 

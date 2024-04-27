@@ -1,0 +1,218 @@
+﻿@model TitleComponentViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Market & Applications";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @{
+                var link = "/" + lang;
+            }
+            @if (lang == "az")
+            {
+                <a href="@link">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a href="@link">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a href="@link">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item">
+            @{
+                link = "/" + lang + "/market/" + Model.MarketTitleComponent.Location.Name.ToLower();
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @Model.MarketTitleComponent.NavTitleComponent.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @Model.MarketTitleComponent.NavTitleComponent.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @Model.MarketTitleComponent.NavTitleComponent.Title_EN
+                }
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            @{
+                link = "/" + lang + "/market/" + Model.MarketTitleComponent.Location.Name.ToLower() + "/" + Model.MarketTitleComponent.Slug;
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @Model.MarketTitleComponent.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @Model.MarketTitleComponent.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @Model.MarketTitleComponent.Title_EN
+                }
+            </a>
+        </li>
+    </ol>
+</nav>
+
+@if (Model.MarketTitleComponent.MarketComponents.Count > 0)
+{
+    <div class="container-fluid-md catalog-header base-container">
+        <div class="row no-gutters">
+            <div class="col-lg-7">
+                <h2 class="title_g">
+                    @if (lang == "az")
+                    {
+                        @Model.MarketTitleComponent.Title_AZ
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Model.MarketTitleComponent.Title_RU
+                    }
+                    else if (lang == "en")
+                    {
+                        @Model.MarketTitleComponent.Title_EN
+                    }
+                </h2>
+            </div>
+            <div class="col-lg-5 d-flex mt-4 justify-content-end">
+                <p class="info_g">
+                    @if (lang == "az")
+                    {
+                        @Html.Raw(Model.MarketTitleComponent.Content_AZ)
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Html.Raw(Model.MarketTitleComponent.Content_RU)
+                    }
+                    else if (lang == "en")
+                    {
+                        @Html.Raw(Model.MarketTitleComponent.Content_EN)
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <section class="socar-section">
+        <div class="container-fluid-md">
+            <div class="socar-cards base-container">
+                @foreach (var marketComponent in Model.MarketTitleComponent.MarketComponents)
+                {
+                    var photoPath = "/uploads/" + marketComponent.PhotoName;
+                    <div class="socar-card">
+                        <div class="socar-card-img">
+                            <img src="@photoPath" title="@marketComponent.Title_EN">
+                        </div>
+                        <div class="socar-card-body">
+                            <p class="socar-card-title">
+                                @if (lang == "az")
+                                {
+                                    @marketComponent.Title_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @marketComponent.Title_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @marketComponent.Title_EN
+                                }
+                            </p>
+                            <p class="socar-card-info">
+                                @if (lang == "az")
+                                {
+                                    @Html.Raw(marketComponent.Content_AZ)
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @Html.Raw(marketComponent.Content_RU)
+                                }
+                                else if (lang == "en")
+                                {
+                                    @Html.Raw(marketComponent.Content_EN)
+                                }
+                            </p>
+                            @{
+                                link = "/" + lang + "/market/" + Model.MarketTitleComponent.Location.Name.ToLower() + "/" + Model.MarketTitleComponent.Slug + "/" + marketComponent.Slug;
+                            }
+                            @if (lang == "az")
+                            {
+                                <a href="@link" class="socar-card-btn">Ətraflı</a>
+                            }
+                            else if (lang == "ru")
+                            {
+                                <a href="@link" class="socar-card-btn">Подробности</a>
+                            }
+                            else if (lang == "en")
+                            {
+                                <a href="@link" class="socar-card-btn">More</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section class="compounds-section base-container">
+        @if (!string.IsNullOrEmpty(Model.MarketTitleComponent.PhotoName))
+        {
+            <div class="compounds-img">
+                @{
+                    var photoPath = "/uploads/" + Model.MarketTitleComponent.PhotoName;
+                }
+                <img src="@photoPath">
+            </div>
+        }
+        <div class="compounds-text">
+            @if (lang == "az")
+            {
+                @Html.Raw(Model.MarketTitleComponent.Content_AZ)
+            }
+            else if (lang == "ru")
+            {
+                @Html.Raw(Model.MarketTitleComponent.Content_RU)
+            }
+            else if (lang == "en")
+            {
+                @Html.Raw(Model.MarketTitleComponent.Content_EN)
+            }
+        </div>
+        @if (Model.MarketTitleComponent.MarketTitleComponentFiles.Count > 0)
+        {
+            <div class="compound-pdfs">
+                @foreach (var marketTitleComponentFile in Model.MarketTitleComponent.MarketTitleComponentFiles)
+                {
+                    var filePath = "/uploads/" + marketTitleComponentFile.FileName;
+
+                    <a href="@filePath" download="@filePath" class="compound-pdfs-item">
+                        <img src="/img/Group79.png" alt="">
+                        <p>@marketTitleComponentFile.DisplayName</p>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+
+}
+
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel) 

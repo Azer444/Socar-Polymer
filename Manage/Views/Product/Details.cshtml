@@ -1,0 +1,372 @@
+﻿@using Core.Constants
+@model ProductDetailsViewModel
+
+
+@{
+    ViewData["Title"] = "Socar Polymer | Product";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @{
+                var link = "/" + lang;
+            }
+            @if (lang == "az")
+            {
+                <a href="@link">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a href="@link">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a href="@link">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            @{
+                link = "/" + lang + "/product";
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "product catalog");
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                @if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                @if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                link = "/" + lang + "/product/details/" + Model.Product.Id;
+            }
+            <a href="@link">
+                @Model.Product.ProductFields.FirstOrDefault().Content_EN
+            </a>
+        </li>
+    </ol>
+</nav>
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row">
+        @{
+            var navTitleComponent = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "product catalog");
+        }
+        <div class="col-lg-8">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @navTitleComponent.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @navTitleComponent.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @navTitleComponent.Title_EN
+                }
+            </h2>
+        </div>
+        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+            <p class="info_g">
+                @if (lang == "az")
+                {
+                    @Html.Raw(navTitleComponent.Content_AZ)
+                }
+                else if (lang == "ru")
+                {
+                    @Html.Raw(navTitleComponent.Content_RU)
+                }
+                else if (lang == "en")
+                {
+                    @Html.Raw(navTitleComponent.Content_EN)
+                }
+            </p>
+        </div>
+    </div>
+</div>
+<section class="product-details">
+    <div class="product-details-wrapper base-container">
+        <div class="row">
+            <div class="col-lg-7">
+                @{
+                    var table_color = string.Empty;
+
+                    if (Model.Product.ProductCategory.ProductTitleCategory.Name_EN.ToLower() == "polyethylene")
+                    {
+                        table_color = "polyethylene-color";
+                    }
+                }
+                <p class="product-details-title @table_color">@Model.Product.ProductFields.FirstOrDefault().Content_EN</p>
+                <p class="product-details-subtitle">
+                    @if (lang == "az")
+                    {
+                        @Model.Product.ProductCategory.Name_EN
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Model.Product.ProductCategory.Name_RU
+                    }
+                    else if (lang == "en")
+                    {
+                        @Model.Product.ProductCategory.Name_EN
+                    }
+                </p>
+                <div class="table-responsive-lg product-details-table">
+                    <table class="table">
+                        @{
+                            var row = 0;
+                        }
+                        @foreach (var productField in Model.Product.ProductFields)
+                        {
+                            <tr>
+                                @if (lang == "az")
+                                {
+                                    <td>@productField.Product.ProductCategory.ProductCategoryProperties[row].Name_AZ</td>
+                                    <td>@productField.Content_AZ</td>
+                                }
+                                else if (lang == "ru")
+                                {
+                                    <td>@productField.Product.ProductCategory.ProductCategoryProperties[row].Name_RU</td>
+                                    <td>@productField.Content_RU</td>
+                                }
+                                else if (lang == "en")
+                                {
+                                    <td>@productField.Product.ProductCategory.ProductCategoryProperties[row].Name_EN</td>
+                                    <td>@productField.Content_EN</td>
+                                }
+                            </tr>
+
+                            row++;
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="contact-card">
+                    <p class="contact-card__title">Need more information?</p>
+                    <button class="contact-card__btn" data-toggle="modal" data-target="#contact-form">
+                        Contact
+                        us
+                    </button>
+                    <ul class="contact-card__info">
+                        <li>You haven't found what you need?</li>
+                        <li>Do you want to share an opinion or request some specific information?</li>
+                        <li>Reach out to us anytime and we'll happily answer your questions!</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="product-details-pdf">
+                    @if (lang == "az")
+                    {
+                        @if (Model.Product.TDSName_AZ != null)
+                        {
+                            var href = "/uploads/" + Model.Product.TDSName_AZ;
+                            <a class="product-details-pdf-link mr-4" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Technical Datasheet</p>
+                            </a>
+                        }
+                        @if (Model.Product.SDSName_AZ != null)
+                        {
+
+                            string href = string.Empty;
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                href = "/uploads/" + Model.Product.SDSName_AZ;
+                            }
+                            else
+                            {
+                                href = Url.Action("login", "account", new { returnUrl = Url.Action("details", "product", new { id = Model.Product.Id }) });
+                            }
+                            <a class="product-details-pdf-link" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Safety Datasheet</p>
+                            </a>
+                        }
+                    }
+                    else if (lang == "ru")
+                    {
+                        @if (Model.Product.TDSName_RU != null)
+                        {
+                            var href = "/uploads/" + Model.Product.TDSName_RU;
+                            <a class="product-details-pdf-link mr-4" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Technical Datasheet</p>
+                            </a>
+                        }
+                        @if (Model.Product.SDSName_RU != null)
+                        {
+
+                            string href = string.Empty;
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                href = "/uploads/" + Model.Product.SDSName_RU;
+                            }
+                            else
+                            {
+                                href = Url.Action("login", "account", new { returnUrl = Url.Action("details", "product", new { id = Model.Product.Id }) });
+                            }
+                            <a class="product-details-pdf-link" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Safety Datasheet</p>
+                            </a>
+                        }
+                    }
+                    else if (lang == "en")
+                    {
+                        @if (Model.Product.TDSName_EN != null)
+                        {
+                            var href = "/uploads/" + Model.Product.TDSName_EN;
+                            <a class="product-details-pdf-link mr-4" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Technical Datasheet</p>
+                            </a>
+                        }
+                        @if (Model.Product.SDSName_EN != null)
+                        {
+
+                            string href = string.Empty;
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                href = "/uploads/" + Model.Product.SDSName_EN;
+                            }
+                            else
+                            {
+                                href = Url.Action("login", "account", new { returnUrl = Url.Action("details", "product", new { id = Model.Product.Id }) });
+                            }
+                            <a class="product-details-pdf-link" href="@href">
+                                <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                <p>Safety Datasheet</p>
+                            </a>
+                        }
+                    }
+                </div>
+                <div class="d-flex">
+                    @{
+                        var order = 1;
+                        foreach (var productBrochure in Model.Product.ProductBrochures)
+                        {
+                            var href = "/uploads/" + productBrochure.Name;
+                            <div class="product-details-pdf mr-4">
+                                <a class="product-details-pdf-link" href="@href">
+                                    <img src="/img/Group79.png" alt="Socar Polymer Pdf">
+                                    <p>Brochure-@order</p>
+                                </a>
+                            </div>
+
+                            order++;
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade contact-modal" id="contact-form" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     aria-labelledby="contact-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" data-dismiss="modal">&#10006;</button>
+            </div>
+            <div class="modal-body">
+                <h3 class="contact-modal__title">Contact us</h3>
+                <p class="contact-modal__warning">* concrete product</p>
+                <div class="contact-form">
+                    <form asp-action="contact" asp-controller="product" method="POST">
+                        <input asp-for="ProductContactFormModel.ProductId" type="hidden" value="@Model.Product.Id" />
+                        <div class="form-group">
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.FirstName">First Name*</label>
+                                <input required type="text" class="form-control form-input" asp-for="ProductContactFormModel.FirstName" placeholder="Write here">
+                                <!-- <p class="error-msg">Error message will be here</p> -->
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.LastName">Last Name*</label>
+                                <input required type="text" class="form-control form-input" asp-for="ProductContactFormModel.LastName" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Email">Email*</label>
+                                <input required type="email" class="form-control form-input" asp-for="ProductContactFormModel.Email" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Company">Company*</label>
+                                <input required type="text" asp-for="ProductContactFormModel.Company" class="form-control form-input" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Position">Position</label>
+                                <input type="text" class="form-control form-input" asp-for="ProductContactFormModel.Position" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Country">Country</label>
+                                <input type="text" class="form-control form-input" asp-for="ProductContactFormModel.Country" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Phone">Phone</label>
+                                <input type="number" class="form-control form-input" asp-for="ProductContactFormModel.Phone" placeholder="Write here">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.NatureRequest">
+                                    What is the nature of your request?*
+                                </label>
+                                <div class="form-select">
+                                    <select class="select" asp-for="ProductContactFormModel.NatureRequest" asp-items="Html.GetEnumSelectList<NatureRequest>()"></select>
+                                </div>
+                                <!-- <p class="error-msg">Error message will be here</p> -->
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" asp-for="ProductContactFormModel.Content">Please enter your request*</label>
+                                <textarea rows="5" class="form-control form-input form-textarea" asp-for="ProductContactFormModel.Content" placeholder="Write here"></textarea>
+                            </div>
+                            <button type="submit" class="contact-form__submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel)
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+
+    @if (ViewBag.Success == true)
+    {
+        <script>
+            $(function () {
+                toastr.success('Successfully sent!');
+            });
+        </script>
+    }
+    else if (ViewBag.Error == true)
+    {
+        <script>
+            $(function () {
+                toastr.error('Please try again!');
+            });
+        </script>
+    }
+}

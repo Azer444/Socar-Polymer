@@ -1,0 +1,123 @@
+﻿@model CertificatesDetailsViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Certificates";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @if (lang == "az")
+            {
+                <a asp-action="index" asp-controller="home">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a asp-action="index" asp-controller="home">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a asp-action="index" asp-controller="home">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            @{
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "certificates & documents");
+                if (lang == "az")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_AZ</a>
+                }
+                else if (lang == "ru")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_RU</a>
+                }
+                else if (lang == "en")
+                {
+                    <a asp-action="index" asp-controller="certificates">@breadcrumb.Title_EN</a>
+                }
+            }
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                var link = "/" + lang + "/certificates/" + Model.CertificateComponent.Slug;
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @Model.CertificateComponent.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @Model.CertificateComponent.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @Model.CertificateComponent.Title_EN
+                }
+            </a>
+        </li>
+    </ol>
+</nav>
+
+<!------------------------------------- BreadCrumb End ------------------------------------->
+
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row no-gutters">
+        <div class="col-lg-10">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @Model.CertificateComponent.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @Model.CertificateComponent.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @Model.CertificateComponent.Title_EN
+                }
+            </h2>
+        </div>
+    </div>
+</div>
+
+
+<section class="food-certificates">
+    <div class="container-fluid-md">
+        <div class="base-container food-certificates-wrapper">
+            <div class="food-certificates-pdfs">
+
+                @if (lang == "en")
+                {
+                    var filePath = "/uploads/" + Model.CertificateComponent.FileName_EN;
+                    <a href="@filePath" download="@filePath" class="food-certificates-pdf">
+                        <img src="/img/Group79.png" alt="">
+                        <p>@Model.CertificateComponent.FileName_EN</p>
+                    </a>
+                }
+                else if (lang == "ru")
+                {
+                    var filePath = "/uploads/" + Model.CertificateComponent.FileName_RU;
+                    <a href="@filePath" download="@filePath" class="food-certificates-pdf">
+                        <img src="/img/Group79.png" alt="">
+                        <p>@Model.CertificateComponent.FileName_RU</p>
+                    </a>
+                }
+            </div>
+            <div class="food-certificates-footer">
+                <p>All available food certificates can be found in the <a asp-action="index" asp-controller="product">product catalog</a> after selecting the grade reference. </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel) 

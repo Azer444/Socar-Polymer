@@ -1,0 +1,116 @@
+﻿@model ProductTitleCategory
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header main-background py-3 d-flex align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold main-color">Title Category Details</h6>
+                        <div>
+                            <a asp-action="index" asp-controller="product" class="btn btn-primary">Back to List</a>
+                            <a asp-action="edit_title_category" asp-controller="product" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Name_AZ)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Name_AZ)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Name_RU)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Name_RU)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Name_EN)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Name_EN)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.ProductCategories)</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <a asp-action="add_category" asp-controller="product" asp-route-id="@Model.Id" class="btn btn-primary mb-3">Add Category</a>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="main-color text-center">Name (AZ)</th>
+                                                        <th class="main-color text-center">Name (RU)</th>
+                                                        <th class="main-color text-center">Name (EN)</th>
+                                                        <th class="main-color text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var productCategory in Model.ProductCategories)
+                                                    {
+                                                    <tr id="@productCategory.Id">
+                                                        <td class="text-center">@productCategory.Name_AZ</td>
+                                                        <td class="text-center">@productCategory.Name_RU</td>
+                                                        <td class="text-center">@productCategory.Name_EN</td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex justify-content-center">
+                                                                <a asp-action="edit_category" asp-controller="product" asp-route-id="@productCategory.Id" class="btn btn-primary mr-1">Edit</a>
+                                                                <a asp-action="detail_category" asp-controller="product" asp-route-id="@productCategory.Id" class="btn btn-info mr-1">Details</a>
+                                                                <a class="btn btn-danger delete-category text-white">Delete</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).on("click", ".delete-category", function () {
+
+            var deleteBtn = $(this);
+            var productCategory = $(this).parents().eq(2);
+
+            var data = {
+                id: $(productCategory).attr('id')
+            }
+
+            $.ajax({
+                url: "@Url.Action("delete_category","product")",
+                data: data,
+                success: function () {
+                    $(deleteBtn).text("Deleted");
+                    $(productCategory).fadeOut("normal", function () {
+                        $(this).remove();
+                    });
+                }
+            })
+        })
+    </script>
+}
+

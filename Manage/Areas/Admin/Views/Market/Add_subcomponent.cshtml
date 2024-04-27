@@ -1,0 +1,183 @@
+﻿@model MarketSubComponentAddViewModel
+
+@{
+    var marketComponentId = Url.ActionContext.RouteData.Values["id"];
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <h1 class="main-color">Add Market Subcomponent</h1>
+                <div class="row main-color">
+                    <div class="col-12">
+                        <form asp-action="add_subcomponent" asp-controller="market" asp-area="admin" method="post" enctype="multipart/form-data">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input asp-for="Id" type="hidden" value="0" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input asp-for="MarketComponentId" type="hidden" value="@marketComponentId" />
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Title Component</h3>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <input readonly value="@ViewBag.ComponentTitle" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Title</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Title_AZ" class="control-label"></label>
+                                            <input asp-for="Title_AZ" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Title_RU" class="control-label"></label>
+                                            <input asp-for="Title_RU" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Title_EN" class="control-label"></label>
+                                            <input asp-for="Title_EN" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Slug</h3>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="Slug" class="control-label"></label>
+                                            <input readonly asp-for="Slug" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Content</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Content_AZ" class="control-label"></label>
+                                            <textarea asp-for="Content_AZ" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Content_RU" class="control-label"></label>
+                                            <textarea asp-for="Content_RU" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Content_EN" class="control-label"></label>
+                                            <textarea asp-for="Content_EN" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Photo</h3>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input asp-for="Photo" class="form-control custom-file-input" accept="image/*" />
+                                                <label class="custom-file-label">
+                                                    Add photo...
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <h3 class="main-color">Files</h3>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input asp-for="Files" multiple class="form-control custom-file-input" accept=".pdf" />
+                                                <label class="custom-file-label">
+                                                    Add files...
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <div class="form-group">
+                                            <input type="submit" value="Add" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <a asp-action="index" asp-controller="market" class="main-color">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/vendor/slug/slug.js"></script>
+    <script src="~/js/show_file_name.js"></script>
+    <script src="~/vendor/ckeditor/ckeditor.js"></script>
+
+    <!-- validate js -->
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        $('#Title_EN').on('input', function () {
+            $('#Slug').val(slug($(this).val()));
+        });
+
+        ClassicEditor
+            .create(document.querySelector('#Content_AZ'), {
+                viewportTopOffset: 50,
+                toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'imageUpload'],
+                simpleUpload: {
+                    uploadUrl: '/admin/market/upload_image',
+                    withCredentials: true
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            })
+
+        ClassicEditor
+            .create(document.querySelector('#Content_RU'), {
+                viewportTopOffset: 50,
+                toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'imageUpload'],
+                simpleUpload: {
+                    uploadUrl: '/admin/market/upload_image',
+                    withCredentials: true
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            })
+
+
+        ClassicEditor
+            .create(document.querySelector('#Content_EN'), {
+                viewportTopOffset: 50,
+                toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'imageUpload'],
+                simpleUpload: {
+                    uploadUrl: '/admin/market/upload_image',
+                    withCredentials: true
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    </script>
+}

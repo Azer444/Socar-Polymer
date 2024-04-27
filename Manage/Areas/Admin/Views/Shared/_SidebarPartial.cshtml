@@ -1,0 +1,60 @@
+﻿<!-- Sidebar -->
+<ul class="navbar-nav main-background sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center">
+        <div class="sidebar-brand-text mx-3">
+            <img src="~/img/logo.png" />
+        </div>
+    </a>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "home" ? "active" : "")" asp-action="index" asp-controller="home">Home</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "contact" ? "active" : "")" asp-action="index" asp-controller="contact">Contact</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            <span>Components</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "user" ? "active" : "")" asp-action="checklist" asp-controller="user">Unconfirmed Users</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "market" ? "active" : "")" asp-action="index" asp-controller="market">Markets</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "product"  && ViewContext.RouteData.Values["action"].ToString().ToLower() == "index" ? "active" : "")" asp-action="index" asp-controller="product">Products</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "product" && ViewContext.RouteData.Values["action"].ToString().ToLower() == "contact" ? "active" : "")" asp-action="contact" asp-controller="product">Product Contacts</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "certificate" ? "active" : "")" asp-action="index" asp-controller="certificate">Certificates</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "news" ? "active" : "")" asp-action="index" asp-controller="news">News</a>
+                <a class="collapse-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "location" ? "active" : "")" asp-action="index" asp-controller="location">Locations</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "nav" ? "active" : "")">
+        <a class="nav-link" asp-action="index" asp-controller="nav">
+            <span>Navbar</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "messages" ? "active" : "")">
+        <a class="nav-link" asp-action="messages" asp-controller="contact">
+            <span>Contact Messages</span>
+        </a>
+    </li>
+
+</ul>
+<!-- End of Sidebar -->

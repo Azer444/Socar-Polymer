@@ -1,0 +1,83 @@
+﻿@model List<Location>
+
+@{
+    ViewData["Title"] = "Location";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header main-background py-3">
+                        <h6 class="m-0 font-weight-bold main-color">Locations</h6>
+                    </div>
+                    <div class="card-body">
+                        <a asp-action="add" asp-controller="location" class="btn btn-primary mb-3">Add</a>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="main-color text-center">Name</th>
+                                        <th class="main-color text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var location in Model)
+                                        {
+                                            <tr id="@location.Id">
+                                                <td class="text-center">@location.Name</td>
+                                                <td class="text-center">
+                                                    <div class="d-flex justify-content-center">
+                                                        <a class="btn btn-primary mr-2" asp-action="edit" asp-controller="location" asp-route-id="@location.Id">Edit</a>
+                                                        <a class="btn btn-danger delete-btn text-white">Delete</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+            $(document).on("click", ".delete-btn", function () {
+
+                var deleteBtn = $(this);
+                var location = $(this).parents().eq(2);
+
+                var data = {
+                    id: $(location).attr('id')
+                }
+
+                $.ajax({
+                    url: "@Url.Action("delete","location")",
+                    data: data,
+                    success: function () {
+                        $(deleteBtn).text("Deleted");
+                        $(deleteBtn).css("pointer-events", "none");
+                        $(location).fadeOut("normal", function () {
+                            $(this).remove();
+                        });
+                    }
+                })
+            })
+    </script>
+}
+
+

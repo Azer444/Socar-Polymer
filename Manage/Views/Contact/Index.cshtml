@@ -1,0 +1,315 @@
+﻿@model ContactIndexViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Contact";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @if (lang == "az")
+            {
+                <a asp-action="index" asp-controller="home">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a asp-action="index" asp-controller="home">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a asp-action="index" asp-controller="home">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "contact");
+                if (lang == "az")
+                {
+                    <a asp-action="index" asp-controller="contact">@breadcrumb.Title_AZ</a>
+                }
+                else if (lang == "ru")
+                {
+                    <a asp-action="index" asp-controller="contact">@breadcrumb.Title_RU</a>
+                }
+                else if (lang == "en")
+                {
+                    <a asp-action="index" asp-controller="contact">@breadcrumb.Title_EN</a>
+                }
+            }
+        </li>
+    </ol>
+</nav>
+
+<!------------------------------------- BreadCrumb End ------------------------------------->
+
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row no-gutters">
+        <div class="col-lg-7">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </h2>
+        </div>
+        <div class="col-lg-5 d-flex mt-4 info-certificates justify-content-center align-items-center">
+            <div class="info_g">
+                @if (lang == "az")
+                {
+                    @Html.Raw(breadcrumb.Content_AZ)
+                }
+                else if (lang == "ru")
+                {
+                    @Html.Raw(breadcrumb.Content_RU)
+                }
+                else if (lang == "en")
+                {
+                    @Html.Raw(breadcrumb.Content_EN)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="contact">
+    <div class="contact-wrapper base-container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contact-details">
+                    @if (lang == "az")
+                    {
+                        @Html.Raw(Model.ContactTextComponent?.Content_AZ)
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Html.Raw(Model.ContactTextComponent?.Content_RU)
+                    }
+                    else if (lang == "en")
+                    {
+                        @Html.Raw(Model.ContactTextComponent?.Content_EN)
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <p class="contact-title">
+                    @if (lang == "az")
+                    {
+                        @Model.ContactFormComponent?.Title_AZ
+                    }
+                    else if (lang == "ru")
+                    {
+                        @Model.ContactFormComponent?.Title_RU
+                    }
+                    else if (lang == "en")
+                    {
+                        @Model.ContactFormComponent?.Title_EN
+                    }
+                </p>
+                <div class="contact-form">
+                    <form id="contact-form" action="" method="POST">
+                        <div class="form-group">
+                            <div class="form-group-wrapper">
+                                <label class="form-label" for="name">
+                                    @if (lang == "az")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_1_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_1_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_1_EN
+                                    }
+                                </label>
+                                <input name="name" type="text" class="form-control form-input" id="name">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" for="surname">
+                                    @if (lang == "az")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_2_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_2_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_2_EN
+                                    }
+                                </label>
+                                <input name="surname" type="text" class="form-control form-input" id="surname">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" for="email">
+                                    @if (lang == "az")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_3_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_3_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_3_EN
+                                    }
+                                </label>
+                                <input name="email" type="email" class="form-control form-input" id="email">
+                            </div>
+                            <div class="form-group-wrapper">
+                                <label class="form-label" for="message">
+                                    @if (lang == "az")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_4_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_4_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @Model.ContactFormComponent?.Subtitle_4_EN
+                                    }
+                                </label>
+                                <textarea rows="5" name="message" type="email" class="form-control form-input form-textarea"
+                                          id="message"></textarea>
+                            </div>
+                            <div class="form-group-wrapper">
+                                <div class="form-success-alert d-none">
+                                    <p class="alert alert-success">
+                                        @if (lang == "az")
+                                        {
+                                            @Model.ContactFormComponent?.SuccessMessage_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @Model.ContactFormComponent?.SuccessMessage_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @Model.ContactFormComponent?.SuccessMessage_EN
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group-wrapper">
+                                <div class="col-12 form-error-alert d-none">
+                                    <p class="alert alert-danger">
+                                        @if (lang == "az")
+                                        {
+                                            @Model.ContactFormComponent?.ErrorMessage_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @Model.ContactFormComponent?.ErrorMessage_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @Model.ContactFormComponent?.ErrorMessage_EN
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="g-recaptcha" id="rcaptcha" data-sitekey="6LdyMd0cAAAAAPsGuwLMAcxn2PGKWnn3iJiG6oE4"></div>
+                            <span id="captcha" class="text-danger"></span> <!-- this will show captcha errors -->
+                            <button type="submit" class="submit-btn">
+                                @if (lang == "az")
+                                {
+                                    @Model.ContactFormComponent?.ButtonText_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @Model.ContactFormComponent?.ButtonText_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @Model.ContactFormComponent?.ButtonText_EN
+                                }
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel)
+
+@section Scripts{
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+
+        function get_action(form) {
+            var v = grecaptcha.getResponse();
+            if (v.length == 0) {
+                document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+                return false;
+            }
+            else {
+                document.getElementById('captcha').innerHTML = "Captcha completed";
+                return true;
+            }
+        }
+
+    </script>
+    <script>
+        $('form#contact-form').submit( function (e) {
+            e.preventDefault();
+
+            var name = $('#name').val();
+            var surname = $('#surname').val();
+            var email = $('#email').val();
+            var message = $('#message').val();
+
+            if (name == "" || surname == "" || email == "" || message == "") {
+                $('#contact-form .form-error-alert').removeClass('d-none');
+            }
+            else {
+
+            var data = new FormData(this);
+
+            $.ajax({
+                url: "@Url.Action("add_message","contact")",
+                data: data,
+                method: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    $('#contact-form .form-error-alert').addClass('d-none');
+                    $('#contact-form .form-success-alert').removeClass('d-none');
+                    setTimeout(function () {
+                        $('#contact-form .form-success-alert').addClass("d-none");
+                    }, 3000)
+
+                    $('#name').val('');
+                    $('#surname').val('');
+                    $('#email').val('');
+                    $('#message').val('');
+                },
+                error: function () {
+                    $('#contact-form .form-alert').removeClass('d-none');
+                }
+            })
+            }
+        })
+    </script>
+}

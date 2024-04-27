@@ -1,0 +1,143 @@
+﻿@model MarketIndexViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Market & Applications";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @{
+                var link = "/" + lang;
+            }
+            @if (lang == "az")
+            {
+                <a href="@link">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a href="@link">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a href="@link">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                link = "/" + lang + "/product";
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "markets & applications");
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                @if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                @if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </a>
+        </li>
+    </ol>
+</nav>
+
+<!------------------------------------- BreadCrumb End ------------------------------------->
+
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row no-gutters">
+        <div class="col-lg-7">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </h2>
+        </div>
+        <div class="col-lg-5 d-flex mt-4 justify-content-end align-items-center">
+            <div class="info_g">
+                @if (lang == "az")
+                {
+                    @Html.Raw(breadcrumb.Content_AZ)
+                }
+                else if (lang == "ru")
+                {
+                    @Html.Raw(breadcrumb.Content_RU)
+                }
+                else if (lang == "en")
+                {
+                    @Html.Raw(breadcrumb.Content_EN)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="socar-section">
+    <div class="container-fluid-md">
+        <div class="socar-cards base-container">
+            @foreach (var marketTitleComponent in Model.MarketTitleComponents)
+            {
+                var photoPath = "/uploads/" + marketTitleComponent.PhotoName;
+                <div class="socar-card">
+                    <div class="socar-card-img">
+                        <img src="@photoPath">
+                    </div>
+                    <div class="socar-card-body">
+                        <p class="socar-card-title">
+                            @if (lang == "az")
+                            {
+                                @marketTitleComponent.Title_AZ
+                            }
+                            else if (lang == "ru")
+                            {
+                                @marketTitleComponent.Title_RU
+                            }
+                            else if (lang == "en")
+                            {
+                                @marketTitleComponent.Title_EN
+                            }
+                        </p>
+                        <p class="socar-card-info">
+                            @if (lang == "az")
+                            {
+                                @Html.Raw(marketTitleComponent.Content_AZ)
+                            }
+                            else if (lang == "ru")
+                            {
+                                @Html.Raw(marketTitleComponent.Content_RU)
+                            }
+                            else if (lang == "en")
+                            {
+                                @Html.Raw(marketTitleComponent.Content_EN)
+                            }
+                        </p>
+                        <a asp-action="title_component" asp-controller="market" asp-route-slug_title="@marketTitleComponent.Slug" class="socar-card-btn">More</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel) 

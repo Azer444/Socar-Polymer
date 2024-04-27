@@ -1,0 +1,81 @@
+﻿@using Manage.Models
+@model AccountLoginViewModel
+
+@{ 
+    ViewData["Title"] = "Socar Polymer | Login";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/vendor/select2/select2.min.css">
+}
+
+<div class="auth-wrapper">
+    <div class="welcome-section">
+        <img class="welcome-img" src="~/img/welcome.png" alt="Socar Polymer">
+        <h1 class="welcome-title">Welcome!</h1>
+    </div>
+    <div class="form-section">
+        <div class="d-flex justify-content-lg-end justify-content-between header-wrapper">
+            <h1 class="lg-hidden header-text">Welcome!</h1>
+            <a class="redirect-btn" asp-action="index" asp-controller="home">&#10006;</a>
+        </div>
+        <div class="form-logo">
+            <img class="lg-visible img-fluid" src="~/img/logo.png" alt="Socar Polymer">
+            <img class="lg-hidden img-fluid" src="~/img/logo-white.svg" alt="Socar Polymer">
+        </div>
+        <div class="form-wrapper">
+            <div class="form-tabs">
+                <div class="form-tab active">
+                    <a asp-action="login" asp-controller="account" asp-route-returnUrl="@Model.ReturnUrl">Login</a>
+                </div>
+                <div class="form-tab">
+                    <a asp-action="register" asp-controller="account" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+                </div>
+            </div>
+            <div class="form-tab-content form-tab-content">
+                <form asp-action="login" asp-controller="account" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="form-group-wrapper">
+                        <input asp-for="Email" class="form-input form-control" placeholder="@Html.DisplayNameFor(x => x.Email)">
+                    </div>
+                    <div class="form-group-wrapper">
+                        <input asp-for="Password" class="form-input form-control" placeholder="@Html.DisplayNameFor(x => x.Password)">
+                    </div>
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <button type="submit" style="border:none;" class="auth-btn">Login</button>
+                </form>
+            </div>
+        </div>
+        @*<div class="form-section-footer">
+                <p>Phone: <a href="tel:++994 12 404 53 30">+994 12 404 53 30</a></p>
+                <div class="social-media-links lg-visible">
+                    <a href="">
+                        <img src="assets/svgs/instagram.svg" alt="">
+                    </a>
+                    <a href="">
+                        <img src="assets/svgs/linkedin.svg" alt="">
+                    </a>
+                    <a href="">
+                        <img src="assets/svgs/youtube.svg" alt="">
+                    </a>
+                </div>
+                <div class="social-media-links lg-hidden">
+                    <a href="">
+                        <img src="assets/svgs/instagram-white.svg" alt="">
+                    </a>
+                    <a href="">
+                        <img src="assets/svgs/linkedin-white.svg" alt="">
+                    </a>
+                    <a href="">
+                        <img src="assets/svgs/youtube-white.svg" alt="">
+                    </a>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/vendor/select2/select2.min.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+

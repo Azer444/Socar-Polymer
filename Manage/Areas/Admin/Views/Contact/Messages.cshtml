@@ -1,0 +1,52 @@
+﻿@model List<ContactMessage>
+
+@{
+    ViewData["Title"] = "Contact Messages";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header main-background py-3">
+                        <h6 class="m-0 font-weight-bold main-color">Contact Messages</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="main-color text-center">Name</th>
+                                        <th class="main-color text-center">Surname</th>
+                                        <th class="main-color text-center">Email</th>
+                                        <th class="main-color text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var contactMessage in Model)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@contactMessage.Name</td>
+                                            <td class="text-center">@contactMessage.Surname</td>
+                                            <td class="text-center">@contactMessage.Email</td>
+                                            <td class="text-center">
+                                                <a asp-action="messagedetails" asp-controller="contact" asp-route-id="@contactMessage.Id" class="btn btn-info mr-1">Details</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

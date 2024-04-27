@@ -1,0 +1,174 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer";
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+
+@section Styles{
+    <link rel="stylesheet" href="~/vendor/swiper/swiper-bundle.min.css">
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+@{
+    var bannerPath = "/uploads/" + Model.HomeBannerComponent?.PhotoName;
+}
+<section class="banner" style="background: url(@bannerPath) no-repeat; ">
+    <div class="banner-wrapper">
+        @if (lang == "az")
+        {
+            <h1>@Model.HomeBannerComponent?.Title_AZ</h1>
+        }
+        else if (lang == "ru")
+        {
+            <h1>@Model.HomeBannerComponent?.Title_RU</h1>
+        }
+        else if (lang == "en")
+        {
+            <h1>@Model.HomeBannerComponent?.Title_EN</h1>
+        }
+    </div>
+</section>
+
+<section id="introduction">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            @foreach (var homeSliderComponent in Model.HomeSliderComponents)
+            {
+                var photoPath = "/uploads/" + homeSliderComponent.PhotoName;
+                <div class="swiper-slide">
+                    <div class="swiper-slide-item">
+                        <img src="@photoPath" alt="Socar Polymer" title="Socar Polymer">
+                        <div class="swiper-slide-item-info">
+                            <h2>
+                                @if (lang == "az")
+                                {
+                                    @homeSliderComponent.Title_AZ
+                                }
+                                else if (lang == "ru")
+                                {
+                                    @homeSliderComponent.Title_RU
+                                }
+                                else if (lang == "en")
+                                {
+                                    @homeSliderComponent.Title_EN
+                                }
+                            </h2>
+                            @if (homeSliderComponent.Link != null)
+                            {
+                                var link = "/" + lang + "/" + homeSliderComponent.Link;
+                                @if (lang == "az")
+                                {
+                                    <a href="@link" class="btn btn-more">
+                                        Ətraflı
+                                    </a>
+                                }
+                                else if (lang == "ru")
+                                {
+                                    <a href="@link" class="btn btn-more">
+                                        Подробности
+                                    </a>
+                                }
+                                else if (lang == "en")
+                                {
+                                    <a href="@link" class="btn btn-more">
+                                        More
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<section class="cards-section ">
+    <div class="cards-section-wrapper base-container">
+        @foreach (var navTitleHomeComponent in Model.NavTitleHomeComponents)
+        {
+            var photoPath = "/uploads/" + navTitleHomeComponent.PhotoName;
+            <div class="news-card">
+                <div class="news-card-img">
+                    <img src="@photoPath" alt="">
+                </div>
+                <div class="news-card-body">
+                    <p class="news-card-body-title">
+                        @if (lang == "az")
+                        {
+                            @navTitleHomeComponent.Title_AZ
+                        }
+                        else if (lang == "ru")
+                        {
+                            @navTitleHomeComponent.Title_RU
+                        }
+                        else if (lang == "en")
+                        {
+                            @navTitleHomeComponent.Title_EN
+                        }
+                    </p>
+                    <p class="news-card-body-info">
+                        @if (lang == "az")
+                        {
+                            @Html.Raw(navTitleHomeComponent.Content_AZ)
+                        }
+                        else if (lang == "ru")
+                        {
+                            @Html.Raw(navTitleHomeComponent.Content_RU)
+                        }
+                        else if (lang == "en")
+                        {
+                            @Html.Raw(navTitleHomeComponent.Content_EN)
+                        }
+                    </p>
+                    @{
+                        var link = "/" + lang + "/" + navTitleHomeComponent.Link;
+                    }
+                    @if (lang == "az")
+                    {
+                        <a href="@link" class="btn btn-more">
+                            Ətraflı
+                        </a>
+                    }
+                    else if (lang == "ru")
+                    {
+                        <a href="@link" class="btn btn-more">
+                            Подробности
+                        </a>
+                    }
+                    else if (lang == "en")
+                    {
+                        <a href="@link" class="btn btn-more">
+                            More
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel)
+
+@section Scripts{
+    @if (ViewBag.SuccessfullyRegistered == true)
+    {
+        <script>
+            if ("@lang" == "az") {
+                toastr.info('Qeydiyyat tələbiniz uğurla göndərildi, moderatorun təsdiqindən sonra sayta daxil ola bilərsiniz');
+            }
+            else if ("@lang" == "ru") {
+                toastr.info('Ваш запрос на регистрацию успешно применен, вы можете войти на сайт после принятия модерации');
+            }
+            else if ("@lang" == "en") {
+                toastr.info('Your registration request successfully applied, you can sign in to site after moderation accept');
+            }
+        </script>
+    }
+    <script src="~/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/vendor/swiper/swiper.js"></script>
+}

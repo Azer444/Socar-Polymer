@@ -1,0 +1,476 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Socar Polymer | Product Catalog";
+}
+
+@{
+    var lang = Url.ActionContext.RouteData.Values["lang"].ToString();
+}
+
+@await Html.PartialAsync("_HeaderPartial", Model.HeaderPartialViewModel)
+
+<nav class="main-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            @{
+                var link = "/" + lang;
+            }
+            @if (lang == "az")
+            {
+                <a href="@link">Ana səhifə</a>
+            }
+            else if (lang == "ru")
+            {
+                <a href="@link">Домашняя страница</a>
+            }
+            else if (lang == "en")
+            {
+                <a href="@link">Home</a>
+            }
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @{
+                link = "/" + lang + "/product";
+                var breadcrumb = Model.HeaderPartialViewModel.NavTitleComponents.FirstOrDefault(c => c.Title_EN.ToLower() == "product catalog");
+            }
+            <a href="@link">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                @if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                @if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </a>
+        </li>
+    </ol>
+</nav>
+
+<div class="container-fluid-md catalog-header base-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 class="title_g">
+                @if (lang == "az")
+                {
+                    @breadcrumb.Title_AZ
+                }
+                else if (lang == "ru")
+                {
+                    @breadcrumb.Title_RU
+                }
+                else if (lang == "en")
+                {
+                    @breadcrumb.Title_EN
+                }
+            </h2>
+        </div>
+        <div class="col-lg-4 d-flex align-items-center justify-content-end justify-content-center">
+            <div class="info_g">
+                @if (lang == "az")
+                {
+                    @Html.Raw(breadcrumb.Content_AZ)
+                }
+                else if (lang == "ru")
+                {
+                    @Html.Raw(breadcrumb.Content_RU)
+                }
+                else if (lang == "en")
+                {
+                    @Html.Raw(breadcrumb.Content_EN)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="product-catalog">
+    <div class="product-catalog-wrapper base-container">
+        <div class="row no-gutters">
+            <div class="col-lg-2">
+                <form id="sticky-form">
+                    <div class="form-group" id="catalog-form">
+                        @*<input type="text" name="" class="form-control form-input" title="Search"
+                            placeholder="Search" />*@
+                        @*<div class="form-divider"></div>*@
+                        <div class="d-md-flex flex-lg-column flex-row justify-content-md-between">
+                            <div class="filter-wrapper">
+                                <button role="button" class="filter-wrapper-btn">
+                                    Product Line <img src="~/img/down-arrow.png"
+                                                      alt="Down arrow Socar Polymer">
+                                </button>
+                                <div class="filter-results">
+                                    <ul class="filter-results-list">
+                                        <li class="filter-results-list-item">
+                                            <div class="checkbox">
+                                                <input asp-for="ProductSearchViewModel.All" class="category all" data-target="All" type="checkbox">
+                                                <label asp-for="ProductSearchViewModel.All">
+                                                    <span>All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        @for (int i = 0; i < Model.ProductSearchViewModel.ProductTitleCategoriesForFilter.Length; i++)
+                                        {
+                                            <li class="filter-results-list-item">
+                                                <div class="checkbox">
+                                                    <input asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Selected" class="category" data-target="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_EN" type="checkbox">
+                                                    <label asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Selected">
+                                                        @if (lang == "az")
+                                                        {
+                                                            <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_AZ</span>
+                                                        }
+                                                        else if (lang == "ru")
+                                                        {
+                                                            <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_RU</span>
+                                                        }
+                                                        else if (lang == "en")
+                                                        {
+                                                            <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_EN</span>
+                                                        }
+                                                    </label>
+                                                    <input type="hidden" asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Id" />
+                                                    <input type="hidden" asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_EN" />
+                                                </div>
+                                                <div class="pl-2">
+                                                    <div class="checkboxes">
+                                                        @for (int y = 0; y < Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories.Length; y++)
+                                                        {
+                                                            <div class="checkbox">
+                                                                <input asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Selected" class="subcategory" type="checkbox" data-related="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Name_EN">
+                                                                <label asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Selected">
+                                                                    @if (lang == "az")
+                                                                    {
+                                                                        <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Name_AZ</span>
+                                                                    }
+                                                                    else if (lang == "ru")
+                                                                    {
+                                                                        <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Name_RU</span>
+                                                                    }
+                                                                    else if (lang == "en")
+                                                                    {
+                                                                        <span>@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Name_EN</span>
+                                                                    }
+                                                                </label>
+                                                                <input type="hidden" asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Id" />
+                                                                <input type="hidden" asp-for="@Model.ProductSearchViewModel.ProductTitleCategoriesForFilter[i].Categories[y].Name_EN" />
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-9">
+                <div class="results">
+                    <p id="number-of-results">@Model.Count Results</p>
+                    <div class="socar">
+                        @foreach (var productTitleCategory in Model.ProductTitleCategories)
+                        {
+                            var table_background = string.Empty;
+                            var table_color = string.Empty;
+                            var table = string.Empty;
+
+                            if (productTitleCategory.Name_EN.ToLower() == "polyethylene")
+                            {
+                                table_background = "polyethylene-background";
+                                table_color = "polyethylene-color";
+                                table = "polyethylene";
+                            }
+                            else if (productTitleCategory.Name_EN.ToLower() == "polypropylene")
+                            {
+                                table_background = "polypropylene-background";
+                                table_color = "polypropylene-color";
+                                table = "polypropylene";
+                            }
+                            <div class="socar-item">
+                                <p class="socar-title @table_color">
+                                    @if (lang == "az")
+                                    {
+                                        @productTitleCategory.Name_AZ
+                                    }
+                                    else if (lang == "ru")
+                                    {
+                                        @productTitleCategory.Name_RU
+                                    }
+                                    else if (lang == "en")
+                                    {
+                                        @productTitleCategory.Name_EN
+                                    }
+                                </p>
+                                @foreach (var productCategory in productTitleCategory.ProductCategories)
+                                {
+                                    <p class="socar-subtitle">
+                                        @if (lang == "az")
+                                        {
+                                            @productCategory.Name_AZ
+                                        }
+                                        else if (lang == "ru")
+                                        {
+                                            @productCategory.Name_RU
+                                        }
+                                        else if (lang == "en")
+                                        {
+                                            @productCategory.Name_EN
+                                        }
+                                    </p>
+                                    <div class="table-responsive-lg socar-table">
+                                        <table style="overflow-x:scroll;" class="table table-bordered table-hover @table">
+                                            <thead class="@table_background">
+                                                <tr>
+                                                    @foreach (var productCategoryProperty in productCategory.ProductCategoryProperties)
+                                                    {
+                                                        if (lang == "az")
+                                                        {
+                                                            <th>@productCategoryProperty.Name_AZ</th>
+                                                        }
+                                                        else if (lang == "ru")
+                                                        {
+                                                            <th>@productCategoryProperty.Name_RU</th>
+                                                        }
+                                                        else if (lang == "en")
+                                                        {
+                                                            <th>@productCategoryProperty.Name_EN</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var product in productCategory.Products)
+                                                {
+                                                    <tr>
+                                                        @{
+                                                            if (lang == "az")
+                                                            {
+                                                                var order = 1;
+                                                                foreach (var productField in product.ProductFields)
+                                                                {
+                                                                    @if (order == 1)
+                                                                    {
+                                                                        <td>
+                                                                            <a asp-action="details" asp-controller="product" asp-route-id="@product.Id">
+                                                                                @productField.Content_AZ
+                                                                            </a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            @productField.Content_AZ
+                                                                        </td>
+                                                                    }
+
+                                                                    order++;
+                                                                }
+                                                            }
+                                                            else if (lang == "ru")
+                                                            {
+                                                                var order = 1;
+                                                                foreach (var productField in product.ProductFields)
+                                                                {
+                                                                    @if (order == 1)
+                                                                    {
+                                                                        <td>
+                                                                            <a asp-action="details" asp-controller="product" asp-route-id="@product.Id">
+                                                                                @productField.Content_RU
+                                                                            </a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            @productField.Content_RU
+                                                                        </td>
+                                                                    }
+
+                                                                    order++;
+                                                                }
+                                                            }
+                                                            else if (lang == "en")
+                                                            {
+                                                                var order = 1;
+                                                                foreach (var productField in product.ProductFields)
+                                                                {
+                                                                    @if (order == 1)
+                                                                    {
+                                                                        <td>
+                                                                            <a asp-action="details" asp-controller="product" asp-route-id="@product.Id">
+                                                                                @productField.Content_EN
+                                                                            </a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            @productField.Content_EN
+                                                                        </td>
+                                                                    }
+
+                                                                    order++;
+                                                                }
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@await Html.PartialAsync("_FooterPartial", Model.FooterPartialViewModel)
+
+@section Scripts{
+    <script src="~/js/dropdown.js"></script>
+    <script src="~/js/catalog-checkbox.js"></script>
+
+    <script>
+        $(document).on('click', 'label[for="ProductSearchViewModel_All"]', function () {
+            if (!$(this).hasClass('checked')) {
+                $('.category[data-target="All"]').prop('checked', true)
+                $('.category').prop('checked', true)
+                $('.subcategory').prop('checked', true)
+                $(this).addClass('checked');
+            }
+            else {
+                $('.category[data-target="All"]').prop('checked', false)
+                $('.category').prop('checked', false)
+                $('.subcategory').prop('checked', false)
+                $(this).removeClass('checked');
+            }
+        })
+
+        $(document).on('click', '.category.all', function () {
+            if (!$(this).prop('checked')) {
+                $(this).prop('checked', true)
+                $('.category').prop('checked', true)
+                $('.subcategory').prop('checked', true)
+                $('label[for="ProductSearchViewModel_All"]').addClass('checked');
+            }
+            else {
+                $(this).prop('checked', false)
+                $('.category').prop('checked', false)
+                $('.subcategory').prop('checked', false)
+                $('label[for="ProductSearchViewModel_All"]').removeClass('checked');
+            }
+        })
+
+        $(document).on('click', '.checkbox input', function () {
+
+            var data = new FormData($('#sticky-form')[0]);
+
+            $.ajax({
+            url: "/@lang/product/filter",
+                data: data,
+                method: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    console.log(result)
+                    $('.socar').html('');
+
+                    $(result.productTitleCategories).each(function (index, element) {
+                        var socarItem = document.createElement('div');
+                        socarItem.classList.add('socar-item');
+                        var socarTitle = document.createElement('div');
+                        socarTitle.classList.add('socar-title');
+                        socarTitle.innerHTML = `${element.name}`;
+                        socarItem.append(socarTitle);
+
+                        var socarBackground;
+                        var tableName;
+                        if (element.name.toLowerCase() == "polyethylene") {
+                            socarTitle.classList.add('polyethylene-color');
+                            socarBackground = "polyethylene-background";
+                            tableName = "polyethylene";
+                        }
+                        else if (element.name.toLowerCase() == "polypropylene") {
+                            socarTitle.classList.add('polypropylene-color');
+                            socarBackground = "polypropylene-background";
+                            tableName = "polypropylene";
+                        }
+
+                        $(element.productCategories).each(function (index, element) {
+                            var socarSubtitle = document.createElement('p');
+                            socarSubtitle.classList.add('socar-subtitle');
+                            socarSubtitle.innerHTML = `${element.name}`;
+                            socarItem.append(socarSubtitle);
+
+                            var tableContainer = document.createElement('div');
+                            tableContainer.className = 'table-responsive-lg socar-table';
+                            socarItem.append(tableContainer);
+
+                            var table = document.createElement('table');
+                            table.className = `table table-bordered table-hover ${tableName}`;
+                            table.style = "overflow-x:scroll;";
+                            tableContainer.append(table);
+
+                            var thead = document.createElement('thead');
+                            thead.classList.add(socarBackground);
+                            var trHead = document.createElement('tr');
+                            thead.append(trHead);
+
+                            var tbody = document.createElement('tbody');
+
+                            $(element.products).each(function (index, element) {
+                                var trBody = document.createElement('tr');
+                                tbody.append(trBody);
+
+                                $(element.productFields).each(function (index, element) {
+                                    var td = document.createElement('td');
+                                    td.classList.add('text-blue');
+                                    var a = document.createElement('a');
+                                    a.innerHTML = `${element.content}`;
+                                    a.href = `/@lang/product/details/${element.productId}`;
+                                    td.append(a);
+                                    trBody.append(td);
+                                })
+                            });
+
+                            table.append(thead);
+                            table.append(tbody);
+
+                            tableContainer.append(table);
+
+                            $(element.productCategoryProperties).each(function (index, element) {
+                                var th = document.createElement('th');
+                                th.innerHTML = `${element.name}`;
+                                trHead.append(th);
+                            })
+
+                        })
+
+                        $('.socar').append(socarItem);
+                        console.log(socarItem)
+                    });
+
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        })
+
+
+    </script>
+}

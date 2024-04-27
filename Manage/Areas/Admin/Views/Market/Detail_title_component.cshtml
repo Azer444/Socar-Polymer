@@ -1,0 +1,194 @@
+﻿@model MarketTitleComponent
+<!-- Page Wrapper -->
+<div id="wrapper">
+    @await Html.PartialAsync("_SidebarPartial")
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            @await Html.PartialAsync("_TopbarPartial")
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header main-background py-3 d-flex align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold main-color">Title Component Details</h6>
+                        <div>
+                            <a asp-action="index" asp-controller="market" class="btn btn-primary">Back to List</a>
+                            <a asp-action="edit_title_component" asp-controller="market" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.PhotoName)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @{
+                                            @if (!string.IsNullOrEmpty(Model.PhotoName))
+                                            {
+                                                var photoPath = "/uploads/" + Model.PhotoName;
+                                                <img src="@photoPath" class="image-size" />
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Title_AZ)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Title_AZ)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Title_RU)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Title_RU)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Title_EN)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Title_EN)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Slug)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Slug)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Content_AZ)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.Raw(Model.Content_AZ)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Content_RU)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.Raw(Model.Content_RU)
+                                    </div>
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Content_EN)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.Raw(Model.Content_EN)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.Location)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DisplayFor(model => model.Location.Name)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-3">
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.MarketTitleComponentFiles)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @{
+                                            foreach (var file in Model.MarketTitleComponentFiles)
+                                            {
+                                                var filePath = "/uploads/" + file.FileName;
+                                                <a class="d-inline-block" href="@filePath" download>@filePath</a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 font-weight-bold main-color">
+                                        <h5>@Html.DisplayNameFor(model => model.MarketComponents)</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <a asp-action="add_component" asp-controller="market" asp-route-id="@Model.Id" class="btn btn-primary mb-3">Add Component</a>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="main-color text-center">Photo</th>
+                                                        <th class="main-color text-center">Title</th>
+                                                        <th class="main-color text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var marketComponent in Model.MarketComponents)
+                                                    {
+                                                        var photoPath = "/uploads/" + marketComponent.PhotoName;
+                                                        <tr id="@marketComponent.Id">
+                                                            <td class="text-center">
+                                                                <img src="@photoPath" class="image-size" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @marketComponent.Title_EN
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex justify-content-center">
+                                                                    <a asp-action="add_subcomponent" asp-controller="market" asp-route-id="@marketComponent.Id" class="btn btn-primary mr-1">Add SubComponent</a>
+                                                                    <a asp-action="edit_component" asp-controller="market" asp-route-id="@marketComponent.Id" class="btn btn-primary mr-1">Edit</a>
+                                                                    <a asp-action="detail_component" asp-controller="market" asp-route-id="@marketComponent.Id" class="btn btn-info mr-1">Details</a>
+                                                                    <a class="btn btn-danger delete-component text-white">Delete</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).on("click", ".delete-component", function () {
+
+            var deleteBtn = $(this);
+            var marketComponent = $(this).parents().eq(2);
+
+            var data = {
+                id: $(marketComponent).attr('id')
+            }
+
+            $.ajax({
+                url: "@Url.Action("delete_component","market")",
+                data: data,
+                success: function () {
+                    $(deleteBtn).text("Deleted");
+                    $(marketComponent).fadeOut("normal", function () {
+                        $(this).remove();
+                    });
+                }
+            })
+        })
+    </script>
+}
+
